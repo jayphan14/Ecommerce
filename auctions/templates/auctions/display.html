@@ -1,0 +1,79 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if message %}
+        <h3 style="color:blue" >{{message}}</h3>
+    {% endif %}
+
+    <h1>Item: {{item.item}}</h1>
+    <p>Description: {{item.description}}<p>
+    <p>Price: {{item.price}}</p>
+    <img src="{{item.url}}" alt="Card image cap" style="height: 200px;">
+    <br>
+
+
+
+
+{% if item.avai == True %}
+
+    <div>
+        <form action="{% url 'watchlist' %}"  method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="item" value={{item.id}}>
+            <input type="submit" class="Add To Watchlist" value="Add To Watchlist" />
+        </form> 
+    </div>
+    
+    <br>
+
+    <div>
+        <form action="{% url 'bid' %}" method ="POST">
+            {% csrf_token %}
+            {{bidForm}}
+            <input type="hidden" name="item" value={{item.id}}>
+            <input type="submit" value="Place Bid">
+        </form>
+    </div>
+    
+
+    <div>
+        <form action="close" method ="POST">
+            {% csrf_token %}
+            <input type="submit" value="Close Bid">
+            <input type="hidden" name="item" value={{item.id}}>
+    
+        </form>
+    </div>
+
+    
+
+    <div>
+        {% for comment in comments %}
+            <p>{{comment}}</p>
+        {% endfor %}
+    </div>
+    
+    <div>
+        <form action="comment" method= "POST">
+            {% csrf_token %}
+            <label for="content">Comment: </label>
+            <input type="text" name="content">
+            <input type="hidden" name= "item" value={{item.id}}>
+            <input type="submit">
+        </form>
+    </div>
+    
+
+
+{% else %}
+    <h1>This bid has been closed</h1>
+
+    {% if item.bidder %}
+        <h1>Bid is won by {{item.bidder}}</h1>
+    {% else %}
+        <h1>This bid has no winner</h1>
+    {% endif %}
+{% endif %}
+   
+{% endblock %}  

@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    {% for item in soldItem %}
+    <div style ="border-bottom: 1px solid black" padding="20px 20px">
+        <a href="{% url 'display' item.id %}" style ="font-size: 50px;">{{item.item}}</a>
+        <h2>Starting Price: ${{item.price}}</h2>
+        <h2>Descriptions: {{item.description}}</h2>
+        <h2>Seller: {{item.user}}</h2>
+        <img src="{{item.url}}" style="height: 200px;">
+    </div>
+
+
+    {% endfor %}
+   
+{% endblock %}  
